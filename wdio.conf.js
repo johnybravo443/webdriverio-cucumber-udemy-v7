@@ -48,7 +48,7 @@ exports.config = {
     // and 30 processes will get spawned. The property handles how many capabilities
     // from the same test should run tests.
     //
-    maxInstances: 1,
+    maxInstances: 2,
     //
     // If you have trouble getting all important capabilities together, check out the
     // Sauce Labs platform configurator - a great tool to configure your capabilities:
@@ -59,7 +59,7 @@ exports.config = {
         // maxInstances can get overwritten per capability. So if you have an in-house Selenium
         // grid with only 5 firefox instances available you can make sure that not more than
         // 5 instances get started at a time.
-        maxInstances: 1,
+        maxInstances: 2,
         //
         browserName: 'chrome',
         acceptInsecureCerts: true
@@ -214,8 +214,9 @@ exports.config = {
      * @param  {[type]} args     object that will be merged with the main configuration once worker is initialized
      * @param  {[type]} execArgv list of string arguments passed to the worker process
      */
-    // onWorkerStart: function (cid, caps, specs, args, execArgv) {
-    // },
+    onWorkerStart: function (cid, caps, specs, args, execArgv) {
+        // console.log('---- [onWorkerStart]')
+    },
     /**
      * Gets executed just after a worker process has exited.
      * @param  {String} cid      capability id (e.g 0-0)
@@ -223,8 +224,9 @@ exports.config = {
      * @param  {[type]} specs    specs to be run in the worker process
      * @param  {Number} retries  number of retries used
      */
-    // onWorkerEnd: function (cid, exitCode, specs, retries) {
-    // },
+    onWorkerEnd: function (cid, exitCode, specs, retries) {
+        // console.log('---- [onWorkerEnd]')
+    },
     /**
      * Gets executed just before initialising the webdriver session and test framework. It allows you
      * to manipulate configurations depending on the capability or spec.
@@ -234,8 +236,7 @@ exports.config = {
      * @param {String} cid worker id (e.g. 0-0)
      */
     beforeSession: function (config, capabilities, specs, cid) {
-        // console.log('------------------------------------------------')
-        // console.log('--------------- [Before Session] ---------------')
+        // console.log('-------- [beforeSession]')
     },
     /**
      * Gets executed before test execution begins. At this point you can access to all global
@@ -343,8 +344,9 @@ exports.config = {
      * @param {Array.<Object>} capabilities list of capabilities details
      * @param {Array.<String>} specs List of spec file paths that ran
      */
-    // after: function (result, capabilities, specs) {
-    // },
+    after: function (result, capabilities, specs) {
+        // console.log("---- [after] ")
+    },
     /**
      * Gets executed right after terminating the webdriver session.
      * @param {Object} config wdio configuration object
@@ -352,8 +354,7 @@ exports.config = {
      * @param {Array.<String>} specs List of spec file paths that ran
      */
     afterSession: function (config, capabilities, specs) {
-        // console.log('--------------- [After Session] ----------------')
-        // console.log('------------------------------------------------')
+        // console.log("---- [afterSession] ")
     },
     /**
      * Gets executed after all workers got shut down and the process is about to exit. An error
@@ -364,6 +365,7 @@ exports.config = {
      * @param {<Object>} results object containing test results
      */
     onComplete: async function(exitCode, config, capabilities, results) {
+        // console.log("---- [onComplete] ")
         //Allure report auto generation
         const reportError = new Error('Could not generate Allure report')
         const generation = allure(['generate', './allure-results', '--clean'])
@@ -389,6 +391,6 @@ exports.config = {
     * @param {String} oldSessionId session ID of the old session
     * @param {String} newSessionId session ID of the new session
     */
-    // onReload: function(oldSessionId, newSessionId) {
-    // }
+    onReload: function(oldSessionId, newSessionId) {
+    }
 }
